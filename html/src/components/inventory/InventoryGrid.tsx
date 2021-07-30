@@ -22,9 +22,15 @@ const InventoryGrid: React.FC<InventoryGridProps> = (props) => {
         )}
       </div>
       <div className={props.right ? "inventory-grid-right" : "inventory-grid"}>
-        {props.inventory.items.map(
-          (item, index) => item && <InventorySlot item={item} key={item.name} />
-        )}
+        {new Array(props.inventory.slots)
+          .fill({})
+          .map((value, index) =>
+            props.inventory.items[index ] ? (
+              <InventorySlot item={props.inventory.items[index]} />
+            ) : (
+              <InventorySlot />
+            )
+          )}
       </div>
     </div>
   );
