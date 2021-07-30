@@ -1,16 +1,16 @@
 import React from "react";
 import { useDrop } from "react-dnd";
-import { DropTypes, Item } from "../typings";
+import { DragTypes, ItemProps } from "../../typings";
 
 const InventoryControl: React.FC = (props) => {
   const [{}, use] = useDrop(() => ({
-    accept: DropTypes.SLOT,
-    drop: (item: Item) =>
+    accept: DragTypes.SLOT,
+    drop: (item: ItemProps) =>
       console.log("used item: " + item.name + " " + item.count + "x"),
   }));
   const [{}, give] = useDrop(() => ({
-    accept: DropTypes.SLOT,
-    drop: (item: Item) =>
+    accept: DragTypes.SLOT,
+    drop: (item: ItemProps) =>
       console.log("gived item: " + item.name + " " + item.count + "x"),
   }));
   return (

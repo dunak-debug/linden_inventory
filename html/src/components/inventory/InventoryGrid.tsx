@@ -1,10 +1,9 @@
 import React from "react";
-import { Inventory } from "../typings";
+import { InventoryProps } from "../../typings";
 import InventorySlot from "./InventorySlot";
-import WeightBar from "./WeightBar";
 
 interface InventoryGridProps {
-  inventory: Inventory;
+  inventory: InventoryProps;
   right?: boolean;
 }
 
@@ -22,13 +21,6 @@ const InventoryGrid: React.FC<InventoryGridProps> = (props) => {
           </p>
         )}
       </div>
-      {props.inventory.weight && props.inventory.maxWeight && (
-        <div className="row-wrapper">
-          <WeightBar
-            percentage={(props.inventory.weight / props.inventory.maxWeight) * 100}
-          />
-        </div>
-      )}
       <div className={props.right ? "inventory-grid-right" : "inventory-grid"}>
         {props.inventory.items.map(
           (item, index) => item && <InventorySlot item={item} key={item.name} />

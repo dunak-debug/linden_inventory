@@ -1,9 +1,9 @@
 import React from "react";
 import { useDragLayer, XYCoord } from "react-dnd";
-import { Item } from "../typings";
+import { ItemProps } from "../../typings";
 
 interface DragLayerProps {
-  item: Item;
+  item: ItemProps;
   currentOffset: XYCoord | null;
   isDragging: boolean;
 }
@@ -21,7 +21,7 @@ const DragPreview: React.FC = () => {
       {isDragging && currentOffset && (
         <div
           style={{
-            position: "fixed",
+            position: 'fixed',
             pointerEvents: 'none',
             zIndex: 1,
             left: currentOffset.x,
@@ -30,6 +30,10 @@ const DragPreview: React.FC = () => {
         >
           <img
             src={process.env.PUBLIC_URL + `/images/${item.name}.png`}
+            style={{
+              imageRendering: '-webkit-optimize-contrast',
+              maxWidth: '80%'
+            }}
           />
         </div>
       )}

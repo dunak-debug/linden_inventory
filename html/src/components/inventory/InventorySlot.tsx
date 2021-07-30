@@ -1,30 +1,26 @@
-import React, { CSSProperties } from "react";
-import { DropTypes, Item } from "../typings";
+import React from "react";
+import { DragTypes, ItemProps } from "../../typings";
 import {
-  DragPreviewImage,
   useDrag,
-  useDragLayer,
   useDrop,
-  XYCoord,
 } from "react-dnd";
-import WeightBar from "./WeightBar";
 
 interface SlotProps {
-  item: Item;
+  item: ItemProps;
 }
 
 const InventorySlot: React.FC<SlotProps> = (props) => {
   const [{ opacity }, drag] = useDrag(() => ({
     item: props.item,
-    type: DropTypes.SLOT,
+    type: DragTypes.SLOT,
     collect: (monitor) => ({
       opacity: monitor.isDragging() ? 0.4 : 1,
     }),
   }));
 
   const [{ isOver }, drop] = useDrop(() => ({
-    accept: DropTypes.SLOT,
-    drop: (item: Item) =>
+    accept: DragTypes.SLOT,
+    drop: (item: ItemProps) =>
       console.log("dropped slot item: " + item.name + " " + item.count + "x"),
     collect: (monitor) => ({
       isOver: monitor.isOver(),
@@ -46,7 +42,6 @@ const InventorySlot: React.FC<SlotProps> = (props) => {
         <div className="item-count">
           {props.item.weight}g {props.item.count}x
         </div>
-        <WeightBar percentage={10} />
         <img
           src={process.env.PUBLIC_URL + `/images/${props.item.name}.png`}
         />

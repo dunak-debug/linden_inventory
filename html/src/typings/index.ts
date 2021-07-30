@@ -1,4 +1,4 @@
-export interface Item {
+export interface ItemProps {
   slot: number;
   name: string;
   label: string;
@@ -7,15 +7,15 @@ export interface Item {
   metadata?: any;
 }
 
-export interface Inventory {
+export interface InventoryProps {
   name: string | number;
   slots: number;
   weight?: number;
   maxWeight?: number;
-  items: Item[];
+  items: ItemProps[];
   type?: string;
 }
 
-export const DropTypes = {
+export const DragTypes = {
   SLOT: 'slot',
 }
