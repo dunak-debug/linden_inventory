@@ -48,7 +48,7 @@ const InventorySlot: React.FC<SlotProps> = (props) => {
         </div>
         <WeightBar percentage={10} />
         <img
-          src={`https://github.com/thelindat/linden_inventory/raw/main/html/images/${props.item.name}.png`}
+          src={process.env.PUBLIC_URL + `/images/${props.item.name}.png`}
         />
         <div className="item-label">
           {props.item.label} [{props.item.slot}]
