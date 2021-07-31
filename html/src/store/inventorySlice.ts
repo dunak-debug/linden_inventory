@@ -1,9 +1,27 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from ".";
-import { InventoryProps, ItemProps } from "../typings";
+import { ConfigProps, InventoryProps, ItemProps } from "../typings";
+
+export const swapItems = createAsyncThunk<
+  void,
+  {
+    fromSlot: number;
+    toSlot: number;
+    fromInventory: Pick<InventoryProps, "id" | "type">;
+    toInventory: Pick<InventoryProps, "id" | "type">;
+  }
+>("inventory/moveItems", async () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(), 250);
+  });
+});
 
 // Define the initial state using that type
-const initialState: { player: InventoryProps; right: InventoryProps } = {
+const initialState: {
+  player: InventoryProps;
+  right: InventoryProps;
+  config: ConfigProps;
+} = {
   player: {
     id: "initial state",
     slots: 50,
@@ -25,54 +43,43 @@ const initialState: { player: InventoryProps; right: InventoryProps } = {
       },
     ],
   },
+  config: {
+    canDrag: true,
+  },
 };
 
 export const inventorySlice = createSlice({
   name: "inventory",
   initialState,
-  reducers: {
-    moveItem: (
-      state,
-      action: PayloadAction<{
-        fromSlot: number;
-        toSlot: number;
-        fromInventory: Pick<InventoryProps, "id" | "type">;
-        toInventory: Pick<InventoryProps, "id" | "type">;
-      }>
-    ) => {
-      console.log(action.payload);
-      if (action.payload.fromInventory.type) {
-        let item = state.right.items[action.payload.fromSlot - 1];
-        item.slot = action.payload.toSlot;
+  reducers: {},
+  extraReducers: (builder) =>
+    builder.addCase(swapItems.pending, (state, action) => {
+      let { fromSlot, toSlot, fromInventory, toInventory } = action.meta.arg;
 
-        if (action.payload.fromInventory.id === action.payload.toInventory.id) {
-          state.right.items[action.payload.toSlot - 1] = item;
-        } else {
-          state.player.items[action.payload.toSlot - 1] = item;
-        }
+      if (fromInventory.type) {
+        let item = state.right.items[fromSlot - 1];
+        item.slot = toSlot;
 
-        state.right.items[action.payload.fromSlot - 1] = {
-          slot: action.payload.fromSlot,
-        };
+        fromInventory.id === toInventory.id
+          ? (state.right.items[toSlot - 1] = item)
+          : (state.player.items[toSlot - 1] = item);
+
+        state.right.items[fromSlot - 1] = { slot: fromSlot };
       } else {
-        let item = state.player.items[action.payload.fromSlot - 1];
-        item.slot = action.payload.toSlot;
+        let item = state.player.items[fromSlot - 1];
+        item.slot = toSlot;
 
-        if (action.payload.fromInventory.id === action.payload.toInventory.id) {
-          state.player.items[action.payload.toSlot - 1] = item;
-        } else {
-          state.right.items[action.payload.toSlot - 1] = item;
-        }
+        fromInventory.id === toInventory.id
+          ? (state.player.items[toSlot - 1] = item)
+          : (state.right.items[toSlot - 1] = item);
 
-        state.player.items[action.payload.fromSlot - 1] = {
-          slot: action.payload.fromSlot,
-        };
+        state.player.items[fromSlot - 1] = { slot: fromSlot };
       }
-    },
-  },
+    }),
 });
 
-export const { moveItem } = inventorySlice.actions;
+//export const { moveItem } = inventorySlice.actions;
 export const selectInventory = (state: RootState) => state.inventory;
+export const selectConfig = (state: RootState) => state.inventory.config;
 
 export default inventorySlice.reducer;
