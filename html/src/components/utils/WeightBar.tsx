@@ -1,14 +1,30 @@
 import React from "react";
 
-interface WeightBarProps {
-    percentage: number;
-}
+const COLORS = {
+  LOW: "red",
+  GOOD: "#30a121",
+};
 
-const WeightBar: React.FC<WeightBarProps> = (props) => {
-    return (
-        <div style={{backgroundColor: '#e0e0de', width: '100%', height: '1vh'}}>
-            <div style={{backgroundColor: 'red', width: `${props.percentage}%`, height: '100%'}}></div>
-        </div>
-    );
+const WeightBar: React.FC<{ percent: number; revert?: boolean }> = ({
+  percent,
+  revert,
+}) => {
+  return (
+    <div className="weight-bar">
+      <div
+        className="weight-bar-value"
+        style={{
+          width: `${percent}%`,
+          backgroundColor: revert
+            ? percent < 50
+              ? COLORS.LOW
+              : COLORS.GOOD
+            : percent > 50
+            ? COLORS.LOW
+            : COLORS.GOOD,
+        }}
+      ></div>
+    </div>
+  );
 };
 export default WeightBar;

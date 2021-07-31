@@ -103,6 +103,12 @@ body {
     padding: 0 2px 0 2px;
   }
 
+  .item-durability {
+    position: absolute;
+    bottom: 15px;
+    width: 100%;
+  }
+
   img {
     image-rendering: -webkit-optimize-contrast;
 	  max-width: 80%;
@@ -151,4 +157,14 @@ input[type="number"] {
 
 ::-webkit-scrollbar-thumb {
   background-color: rgba(0, 0, 0, 0.4);
+}
+
+.weight-bar {
+  background: rgba(0,0,0,0.5);
+	width: 100%;
+	height: 5px;
+
+  &-value {
+    height: 100%;
+  }
 }

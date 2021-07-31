@@ -1,5 +1,6 @@
 import React from "react";
 import { InventoryProps, ItemProps } from "../../typings";
+import WeightBar from "../utils/WeightBar";
 import InventorySlot from "./InventorySlot";
 
 interface InventoryGridProps {
@@ -13,16 +14,29 @@ const generateKey = (pre: string) => {
 const InventoryGrid: React.FC<InventoryGridProps> = (props) => {
   return (
     <div className="column-wrapper">
-      <div className="row-wrapper" style={{ justifyContent: "space-between" }}>
-        <p>
+      <div
+        className="row-wrapper"
+        style={{ justifyContent: "space-between", marginBottom: "5px" }}
+      >
+        <div>
           {props.inventory.id} - {props.inventory.type && props.inventory.type}
-        </p>
+        </div>
         {props.inventory.weight && (
-          <p>
+          <div>
             {props.inventory.weight}/{props.inventory.maxWeight}kg
-          </p>
+          </div>
         )}
       </div>
+      {props.inventory.weight && props.inventory.maxWeight && (
+        <div
+          className="row-wrapper"
+          style={{ marginBottom: "3px", marginRight: "4px" }}
+        >
+          <WeightBar
+            percent={(props.inventory.weight / props.inventory.maxWeight) * 100}
+          />
+        </div>
+      )}
       <div
         className={
           props.inventory.type ? "inventory-grid-right" : "inventory-grid"

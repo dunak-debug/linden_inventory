@@ -12,6 +12,7 @@ import {
   theme,
   animation,
 } from "react-contexify";
+import WeightBar from "../utils/WeightBar";
 
 interface SlotProps {
   inventory: Pick<InventoryProps, "id" | "type">;
@@ -54,6 +55,9 @@ const InventorySlot: React.FC<SlotProps> = (props) => {
       collect: (monitor) => ({
         isOver: monitor.isOver(),
       }),
+      canDrop: (data, monitor) => {
+        return props.item.name === undefined;
+      },
     }),
     [props.item]
   );
@@ -79,13 +83,20 @@ const InventorySlot: React.FC<SlotProps> = (props) => {
             <img
               src={process.env.PUBLIC_URL + `/images/${props.item.name}.png`}
             />
+            <div className="item-durability">
+              <WeightBar percent={20} revert />
+            </div>
             <div className="item-label">
               {props.item.label} [{props.item.slot}]
             </div>
           </>
         )}
       </div>
-      <Menu id={`${props.inventory.id}-${props.item.slot}`} theme={theme.dark} animation={animation.slide}>
+      <Menu
+        id={`${props.inventory.id}-${props.item.slot}`}
+        theme={theme.dark}
+        animation={animation.slide}
+      >
         <Item>Use</Item>
         <Item>Give</Item>
         <Item>Drop</Item>

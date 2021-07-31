@@ -25,7 +25,7 @@ const initialState: {
   player: {
     id: "initial state",
     slots: 50,
-    weight: 4,
+    weight: 8,
     maxWeight: 10,
     items: new Array(10),
   },
@@ -38,6 +38,13 @@ const initialState: {
         slot: 1,
         name: "burger",
         label: "burgeer",
+        weight: 10,
+        count: 5,
+      },
+      {
+        slot: 2,
+        name: "WEAPON_PISTOL",
+        label: "pistol",
         weight: 10,
         count: 5,
       },
