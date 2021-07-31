@@ -6,6 +6,7 @@ import { TouchBackend } from "react-dnd-touch-backend";
 import { store } from "./store";
 import Inventory from "./components/Inventory";
 import "./index.scss";
+import "react-contexify/dist/ReactContexify.css";
 
 ReactDOM.render(
   <React.StrictMode>

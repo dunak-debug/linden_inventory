@@ -16,6 +16,10 @@ export interface InventoryProps {
   type?: string;
 }
 
+export interface ConfigProps {
+  canDrag: boolean;
+}
+
 export const DragTypes = {
   SLOT: 'slot',
 }

@@ -1,16 +1,30 @@
 import React from "react";
 import { DragTypes, InventoryProps, ItemProps } from "../../typings";
 import { useDrag, useDrop } from "react-dnd";
-import { useAppDispatch } from "../../store";
-import { moveItem } from "../../store/inventorySlice";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { selectConfig, swapItems } from "../../store/inventorySlice";
+import {
+  Menu,
+  Item,
+  Separator,
+  Submenu,
+  useContextMenu,
+  theme,
+  animation,
+} from "react-contexify";
 
 interface SlotProps {
-  inventory: Pick<InventoryProps, 'id' | 'type'>;
+  inventory: Pick<InventoryProps, "id" | "type">;
   item: ItemProps;
 }
 
 const InventorySlot: React.FC<SlotProps> = (props) => {
+  const config = useAppSelector(selectConfig);
   const dispatch = useAppDispatch();
+
+  const { show } = useContextMenu({
+    id: `${props.inventory.id}-${props.item.slot}`,
+  });
 
   const [{ opacity }, drag] = useDrag(
     () => ({
@@ -19,9 +33,9 @@ const InventorySlot: React.FC<SlotProps> = (props) => {
       collect: (monitor) => ({
         opacity: monitor.isDragging() ? 0.4 : 1,
       }),
-      canDrag: () => props.item.name !== undefined,
+      canDrag: config.canDrag && props.item.name !== undefined,
     }),
-    [props.item]
+    [props.item, config]
   );
 
   const [{ isOver }, drop] = useDrop(
@@ -29,11 +43,11 @@ const InventorySlot: React.FC<SlotProps> = (props) => {
       accept: DragTypes.SLOT,
       drop: (data: SlotProps) => {
         dispatch(
-          moveItem({
+          swapItems({
             fromSlot: data.item.slot,
             toSlot: props.item.slot,
             fromInventory: data.inventory,
-            toInventory: props.inventory
+            toInventory: props.inventory,
           })
         );
       },
@@ -55,6 +69,7 @@ const InventorySlot: React.FC<SlotProps> = (props) => {
         ref={attachRef}
         className="item-container"
         style={{ opacity, border: isOver ? "5px solid white" : 0 }}
+        onContextMenu={props.item.name ? show : () => {}}
       >
         {props.item.name && (
           <>
@@ -70,6 +85,15 @@ const InventorySlot: React.FC<SlotProps> = (props) => {
           </>
         )}
       </div>
+      <Menu id={`${props.inventory.id}-${props.item.slot}`} theme={theme.dark} animation={animation.slide}>
+        <Item>Use</Item>
+        <Item>Give</Item>
+        <Item>Drop</Item>
+        <Separator />
+        <Submenu label="Components">
+          <Item>Suppressor</Item>
+        </Submenu>
+      </Menu>
     </>
   );
 };

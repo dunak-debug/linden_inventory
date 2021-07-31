@@ -6,9 +6,9 @@ interface InventoryGridProps {
   inventory: InventoryProps;
 }
 
-const generateKey = (pre : string) => {
-  return `${ pre }_${ new Date().getTime() }_${Math.random()}`;
-}
+const generateKey = (pre: string) => {
+  return `${pre}_${new Date().getTime()}_${Math.random()}`;
+};
 
 const InventoryGrid: React.FC<InventoryGridProps> = (props) => {
   return (
@@ -35,7 +35,9 @@ const InventoryGrid: React.FC<InventoryGridProps> = (props) => {
           <InventorySlot
             key={
               props.inventory.type
-                ? generateKey(`${props.inventory.type}-${props.inventory.id}-${item.slot}`)
+                ? generateKey(
+                    `${props.inventory.type}-${props.inventory.id}-${item.slot}`
+                  )
                 : generateKey(`${props.inventory.id}-${item.slot}`)
             }
             item={item}
