@@ -3,7 +3,7 @@ import { useDragLayer, XYCoord } from "react-dnd";
 import { ItemProps } from "../../typings";
 
 interface DragLayerProps {
-  item: ItemProps;
+  item: { item: ItemProps };
   currentOffset: XYCoord | null;
   isDragging: boolean;
 }
@@ -29,7 +29,7 @@ const DragPreview: React.FC = () => {
           }}
         >
           <img
-            src={process.env.PUBLIC_URL + `/images/${item.name}.png`}
+            src={process.env.PUBLIC_URL + `/images/${item.item.name}.png`}
             style={{
               imageRendering: '-webkit-optimize-contrast',
               maxWidth: '80%'

@@ -1,10 +1,13 @@
 import React from "react";
-import { InventoryProps } from "../../typings";
+import { InventoryProps, ItemProps } from "../../typings";
 import InventorySlot from "./InventorySlot";
 
 interface InventoryGridProps {
   inventory: InventoryProps;
-  right?: boolean;
+}
+
+const generateKey = (pre : string) => {
+  return `${ pre }_${ new Date().getTime() }_${Math.random()}`;
 }
 
 const InventoryGrid: React.FC<InventoryGridProps> = (props) => {
@@ -12,8 +15,7 @@ const InventoryGrid: React.FC<InventoryGridProps> = (props) => {
     <div className="column-wrapper">
       <div className="row-wrapper" style={{ justifyContent: "space-between" }}>
         <p>
-          {props.inventory.name} -{" "}
-          {props.inventory.type && props.inventory.type}
+          {props.inventory.id} - {props.inventory.type && props.inventory.type}
         </p>
         {props.inventory.weight && (
           <p>
@@ -21,16 +23,28 @@ const InventoryGrid: React.FC<InventoryGridProps> = (props) => {
           </p>
         )}
       </div>
-      <div className={props.right ? "inventory-grid-right" : "inventory-grid"}>
-        {new Array(props.inventory.slots)
-          .fill({})
-          .map((value, index) =>
-            props.inventory.items[index ] ? (
-              <InventorySlot item={props.inventory.items[index]} />
-            ) : (
-              <InventorySlot />
-            )
-          )}
+      <div
+        className={
+          props.inventory.type ? "inventory-grid-right" : "inventory-grid"
+        }
+      >
+        {Array.from(
+          { ...props.inventory.items, length: props.inventory.slots },
+          (item, index) => item || { slot: index + 1 }
+        ).map((item) => (
+          <InventorySlot
+            key={
+              props.inventory.type
+                ? generateKey(`${props.inventory.type}-${props.inventory.id}-${item.slot}`)
+                : generateKey(`${props.inventory.id}-${item.slot}`)
+            }
+            item={item}
+            inventory={{
+              id: props.inventory.id,
+              type: props.inventory.type,
+            }}
+          />
+        ))}
       </div>
     </div>
   );

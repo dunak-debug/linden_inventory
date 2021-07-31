@@ -1,18 +1,18 @@
 export interface ItemProps {
   slot: number;
-  name: string;
-  label: string;
-  count: number;
-  weight: number;
+  name?: string;
+  label?: string;
+  count?: number;
+  weight?: number;
   metadata?: any;
 }
 
 export interface InventoryProps {
-  name: string | number;
+  id: string;
   slots: number;
+  items: ItemProps[];
   weight?: number;
   maxWeight?: number;
-  items: ItemProps[];
   type?: string;
 }
 
