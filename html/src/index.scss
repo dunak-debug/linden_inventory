@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Basic:wght@300;400;500;600;700&display=swap");
 
 * {
-  font-family: 'Signika';
+  font-family: "Signika";
   font-size: 11pt;
   box-sizing: border-box;
 }
@@ -10,7 +10,7 @@
 body {
   user-select: none;
   overflow: hidden;
-	background: transparent;
+  background: transparent;
   margin: 0;
   color: white;
   text-shadow: 1px 1px 0px black;
@@ -48,41 +48,43 @@ body {
   &-right {
     @extend .inventory-grid;
   }
+}
 
-  .item-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.3);
-    outline: 1px solid rgba(33, 33, 33, 0.8);
+@for $i from 1 through 5 {
+  .inventory-grid:not(.inventory-grid-right)
+    > .item-container:nth-child(#{$i}):before,
+  .hotbar-grid > .item-container:nth-child(#{$i}):before {
+    top: 0;
+    left: 0;
+    margin: 0 auto;
+    position: absolute;
+    content: "#{$i}";
+    height: 15px !important;
+    width: 15px !important;
+    font-size: 11px;
+    font-weight: bold;
+    font-family: "Basic";
+    text-align: center;
+    line-height: 14px;
+    vertical-align: middle;
+    background-color: white;
+    color: black;
+    text-shadow: none !important;
+    outline: 1px solid rgba(0, 0, 0, 0.9);
     outline-offset: -1px;
-    position: relative;
-    padding-bottom: 15px;
   }
+}
 
-  @for $i from 1 through 5 {
-    &:not(&-right) > .item-container:nth-child(#{$i}):before {
-      top: 0;
-      left: 0;
-      margin: 0 auto;
-      position: absolute;
-      content: "#{$i}";
-      height: 15px !important;
-      width: 15px !important;
-      font-size: 11px;
-      font-weight: bold;
-      font-family: "Basic";
-      text-align: center;
-      line-height: 14px;
-      vertical-align: middle;
-      background-color: white;
-      color: black;
-      text-shadow: none !important;
-      outline: 1px solid rgba(0, 0, 0, 0.9);
-      outline-offset: -1px;
-    }
-  }
+.item-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.3);
+  outline: 1px solid rgba(33, 33, 33, 0.8);
+  outline-offset: -1px;
+  position: relative;
+  padding-bottom: 15px;
 
   .item-label {
     width: 100%;
@@ -111,12 +113,11 @@ body {
 
   img {
     image-rendering: -webkit-optimize-contrast;
-	  max-width: 80%;
+    max-width: 80%;
     display: inline-block;
     position: absolute;
     bottom: 10%;
   }
-
 }
 
 .button {
@@ -160,11 +161,31 @@ input[type="number"] {
 }
 
 .weight-bar {
-  background: rgba(0,0,0,0.5);
-	width: 100%;
-	height: 5px;
+  background: rgba(0, 0, 0, 0.5);
+  width: 100%;
+  height: 5px;
 
   &-value {
     height: 100%;
   }
+}
+
+.hotbar-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 100px);
+  grid-auto-rows: 100px;
+  gap: 2px;
+  position: absolute;
+  bottom: 2vh;
+}
+
+.item-info {
+  position: absolute;
+  padding: 0 10px 0 10px;
+  font-weight: 500;
+  font-size: 13px;
+  bottom: 20vh;
+  width: 35vh;
+  background-color: rgba(0, 0, 0, 0.267);
+  color: white;
 }

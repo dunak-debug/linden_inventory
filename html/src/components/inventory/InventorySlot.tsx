@@ -2,7 +2,11 @@ import React from "react";
 import { DragTypes, InventoryProps, ItemProps } from "../../typings";
 import { useDrag, useDrop } from "react-dnd";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { selectConfig, swapItems } from "../../store/inventorySlice";
+import {
+  itemHovered,
+  selectConfig,
+  swapItems,
+} from "../../store/inventorySlice";
 import {
   Menu,
   Item,
@@ -74,6 +78,8 @@ const InventorySlot: React.FC<SlotProps> = (props) => {
         className="item-container"
         style={{ opacity, border: isOver ? "5px solid white" : 0 }}
         onContextMenu={props.item.name ? show : () => {}}
+        //onMouseEnter={() =>props.item.name && dispatch(itemHovered(props.item))}
+        //onMouseLeave={() => dispatch(itemHovered())}
       >
         {props.item.name && (
           <>

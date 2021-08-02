@@ -21,6 +21,7 @@ const initialState: {
   player: InventoryProps;
   right: InventoryProps;
   config: ConfigProps;
+  itemHovered?: ItemProps;
 } = {
   player: {
     id: "initial state",
@@ -58,7 +59,11 @@ const initialState: {
 export const inventorySlice = createSlice({
   name: "inventory",
   initialState,
-  reducers: {},
+  reducers: {
+    itemHovered: (state, action: PayloadAction<ItemProps | undefined>) => {
+      state.itemHovered = action.payload;
+    },
+  },
   extraReducers: (builder) =>
     builder.addCase(swapItems.pending, (state, action) => {
       let { fromSlot, toSlot, fromInventory, toInventory } = action.meta.arg;
@@ -85,7 +90,7 @@ export const inventorySlice = createSlice({
     }),
 });
 
-//export const { moveItem } = inventorySlice.actions;
+export const { itemHovered } = inventorySlice.actions;
 export const selectInventory = (state: RootState) => state.inventory;
 export const selectConfig = (state: RootState) => state.inventory.config;
 
